@@ -85,6 +85,9 @@ module.exports = function(grunt) {
               grunt.file.write(sourceMapFilename, output.map);
               grunt.log.writeln('File ' + chalk.cyan(sourceMapFilename) + ' created.');
             }
+            if (options.combineSourceFiles) {
+              grunt.file.delete(file);
+            }
             process.nextTick(next);
           },
           function(err) {
@@ -101,12 +104,7 @@ module.exports = function(grunt) {
         nextFileObj();
       });
 
-    }, function(){
-      if(options.combineSourceFiles){
-        grunt.file.delete(tempFileName);
-      }
-      done();
-    });
+    }, done);
   });
 
   var compileLess = function(srcFile, destFile, options) {
